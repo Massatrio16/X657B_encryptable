@@ -91,6 +91,7 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 
 # Crypto
 TW_INCLUDE_CRYPTO := true
+TW_USE_FSCRYPT_POLICY := 2
 
 # # Hack: prevent anti roll back
 PLATFORM_SECURITY_PATCH := 2099-12-31
