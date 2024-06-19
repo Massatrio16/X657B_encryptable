@@ -1,6 +1,7 @@
 import /microtrust.rc
 
 on init
+setprop crypto.ready 1
     mkdir /mnt/vendor/persist 0700 root root
 export PATH /bin:/system/bin
     export LD_LIBRARY_PATH /system/lib:/vendor/lib/hw
@@ -18,7 +19,8 @@ symlink /dev/block/dm-2 /dev/block/mapper/vendor
 symlink /dev/block/dm-3 /dev/block/mapper/system
 symlink /dev/block/dm-0 /dev/block/mapper/system_ext
 
-on fs
+on property:crypto.ready=1 && property:ro.crypto.state=encrypted
+    install_keyring
     install_keyring
 
 service keystore_auth /system/bin/keystore_auth
@@ -88,13 +90,10 @@ on property:twrp.all.users.decrypted=true
 on boot
     start health-hal-2-0
 start teei_daemon
-
-on late-fs
-write /proc/bootprof "INIT:late-fs"
-wait_for_prop hwservicemanager.ready "true"
 start keymaster_attestation-1-1
 start gatekeeper-1-0
 start keymaster-4-0
 exec_start wait_for_keymaster
-mount_all /system/etc/recovery.fstab --late
+start beanpodkeymaster
+
 
