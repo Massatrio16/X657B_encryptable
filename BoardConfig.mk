@@ -1,4 +1,4 @@
-DEVICE_PATH := device/infinix/X657B
+DEVICE_PATH := device/infinix/X657BB
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
 
