@@ -5,6 +5,7 @@ setprop crypto.ready 1
     mkdir /mnt/vendor/persist 0700 root root
 export PATH /bin:/system/bin
     export LD_LIBRARY_PATH /system/lib:/vendor/lib/hw
+
 on post-fs
     # Support A/B feature for emmc boot region
     symlink /dev/block/sda /dev/block/mmcblk0boot0
@@ -21,7 +22,10 @@ symlink /dev/block/dm-0 /dev/block/mapper/system_ext
 
 on property:crypto.ready=1 && property:ro.crypto.state=encrypted
     install_keyring
-    install_keyring
+exec_start wait_for_keymaster
+start teei_daemon
+    start keymaster-4-0
+    start gatekeeper-1-0
 
 service keystore_auth /system/bin/keystore_auth
     oneshot
@@ -94,6 +98,5 @@ start keymaster_attestation-1-1
 start gatekeeper-1-0
 start keymaster-4-0
 exec_start wait_for_keymaster
-start beanpodkeymaster
 
 
