@@ -1,6 +1,7 @@
 import /microtrust.rc
 
 on init
+install_keyring
 setprop crypto.ready 1
     mkdir /mnt/vendor/persist 0700 root root
 export PATH /bin:/system/bin
